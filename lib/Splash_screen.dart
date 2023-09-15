@@ -1,7 +1,58 @@
 import 'dart:async';
+import 'package:akshayaflutter/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class SplashScreen extends StatelessWidget {
+
+class  SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+class _SplashScreenState extends State<SplashScreen>   with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.portraitUp,
+    ]);
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 5),
+    );
+
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        navigateToHome();
+      }
+    });
+
+    _animationController.forward();
+  }
+  void navigateToHome() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => login()),
+    );
+  }
+
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,9 +77,18 @@ class SplashScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Logo
-                    Image.asset(
-                      'assets/ic_logo.png',
-                      width: 120, // Adjust the width as needed
+                    AnimatedBuilder(
+                      animation: _animationController,
+                      builder: (BuildContext context, Widget? child) {
+                        return Transform.scale(
+                          scale: _animation.value,
+                          child: Image.asset(
+                            'assets/ic_logo.png',
+                            width: 200,
+                            height: 200,
+                          ),
+                        );
+                      },
                     ),
                     SizedBox(height: 16), // Add spacing between logo and text
                     // Typewriter Text
