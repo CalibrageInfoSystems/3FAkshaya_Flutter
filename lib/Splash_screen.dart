@@ -98,7 +98,7 @@ class _SplashScreenState extends State<SplashScreen>   with SingleTickerProvider
                         color: Color(0xFFCE0E2D),
                       ),
                     ),
-                    SizedBox(height: 8), // Add spacing between the two lines
+                   // Add spacing between the two lines
                     Center(
                       child: TypewriterText(
                         text: "Sowing for a Better Future",

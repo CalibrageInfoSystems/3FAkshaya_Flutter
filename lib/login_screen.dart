@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:akshayaflutter/Otp_Screen.dart';
 import 'package:akshayaflutter/model_class/login_model_class.dart';
 import 'package:akshayaflutter/api_config.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,9 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'CommonUtils/Commonclass.dart';
 class login extends StatefulWidget{
   @override
   _loginScreenState createState() => _loginScreenState();
@@ -25,14 +29,17 @@ class _loginScreenState extends State<login> {
   //   print('loginscreenfarmercode$farmercode');
   //   super.initState();
   // }
-  void _onSubmit() {
-    // Access the entered text
+  Future<loginmodel?> _onSubmit() async {
+
+
     farmercode = _farmercodeController.text;
     print("Entered text: $farmercode");
     farmerlogin(farmercode);
 
 
+
   }
+
   @override
   void dispose() {
     _farmercodeController.dispose();
@@ -58,7 +65,7 @@ class _loginScreenState extends State<login> {
                 color: Color(0x8D000000),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 170.0), // Adjust the top padding as needed
+                padding: const EdgeInsets.only(top: 180.0), // Adjust the top padding as needed
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start, // Align children to the start (top) of the column
                   children: [
@@ -143,9 +150,20 @@ class _loginScreenState extends State<login> {
                           ),
                         ),
                         child: ElevatedButton(
-                          onPressed: () {
-                            _onSubmit();
-                          farmerlogin(farmercode);
+                          onPressed: () async {
+                            bool validationSuccess = await isvalidations();
+                            if (validationSuccess) {
+
+                             _onSubmit();
+
+
+
+                            }
+
+
+
+
+
 
                           },
                           child: Text(
@@ -157,16 +175,16 @@ class _loginScreenState extends State<login> {
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent, // Set the button's background color to transparent
-                            elevation: 0, // Remove the button's elevation
+                            primary: Colors.transparent,
+                            elevation: 0,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0), // Match the border radius in the BoxDecoration
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
                         ),
                       ),
                     ),
-                Padding(
+                    Padding(
                   padding: const EdgeInsets.only(top: 6.0),
                   child:  Container(
                       alignment: AlignmentDirectional.center,
@@ -257,7 +275,7 @@ class _loginScreenState extends State<login> {
     }
   }
 
-  void farmerlogin(String fc) async{
+  Future<loginmodel?> farmerlogin(String fc) async{
 loginlist.clear();
 final url = Uri.parse(baseUrl+getfarmerlogin +"$fc"+ "/null");
 print('farmerloginurl>>$url');
@@ -265,28 +283,46 @@ try {
   final response = await http.get(url);
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
-    if (responseData['ListResult'] != null) {
-      final List<dynamic> logindata = responseData['ListResult'];
-      setState(() {
-        loginlist = logindata
-            .map((loginlistdata) => loginmodel.fromJson(loginlistdata))
-            .toList();
+    print('==response$responseData');
 
-      });
-      print('Send OTP');
+    if (responseData["isSuccess"]) {
+      print("Farmer Details added successfully.");
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('isLoggedIn', true);
+      String Farmercode = farmercode ; // Replace with the actual user ID
+      print('Farmercode==$Farmercode');
+      prefs.setString('Farmercode', Farmercode); // Save the user ID
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Otp_screen(Farmercode: farmercode),));
     } else {
+      print("Error: ${responseData["endUserMessage"]}");
+      if(responseData["endUserMessage"] == "OTP Sent"){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Otp_screen(Farmercode: farmercode),));
+      }
+      else{
+      showCustomToastMessageLong("${responseData["endUserMessage"]}", context, 1, 4);
+      }
 
-
-//      print('$loginmodel');
     }
+
   } else {
     throw Exception('Failed to Farmer list');
   }
 } catch (error) {
-  throw Exception('Failed to connect to the API');
+  throw Exception('Failed to connect to the API$error');
 }
-
+return null;
   }
+  Future<bool> isvalidations() async {
+    bool isValid = true;
+
+    if (_farmercodeController.text.isEmpty) {
+      showCustomToastMessageLong('Please Enter Farmer Id', context, 1, 4);
+      isValid = false;
+    }
+    return isValid; // Return true if validation is successful, false otherwise
+  }
+
+
 }
 
 
