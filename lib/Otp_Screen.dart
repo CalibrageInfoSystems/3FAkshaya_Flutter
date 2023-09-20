@@ -16,23 +16,63 @@ import 'model_class/login_model_class.dart';
 
 class Otp_screen extends StatefulWidget{
   final String Farmercode;
+  final String farmermobilenumber;
 
-  Otp_screen({required this.Farmercode});
+
+  Otp_screen( this.farmermobilenumber, {required this.Farmercode});
   @override
   _otpScreenState createState() => _otpScreenState();
 }
 
 class _otpScreenState extends State<Otp_screen> {
 
-
+  late String newNumber="";
    String enteredOTP='';
    List<Farmer> otplist = [];
   @override
   void initState() {
     super.initState();
     //enteredOTP = "";
+     newNumber=widget.farmermobilenumber;
 
-    print('Farmercode${widget.Farmercode}');
+   // String newNumber = widget.farmermobilenumber;
+
+// Split the string into two parts based on a comma separator
+    //String newNumber = widget.farmermobilenumber;
+
+// Split the string into parts based on a comma separator
+    List<String> numbers = newNumber.split(',');
+
+// Iterate through the numbers and hide the first 6 digits if present
+    for (int i = 0; i < numbers.length; i++) {
+      if (numbers[i].length >= 6) {
+        String hiddenPart = numbers[i].substring(6); // Extract the part to be hidden
+        String asterisks = '*' * 6; // Create a string of 6 asterisks
+        String replacedNumber = asterisks + hiddenPart; // Replace the first 6 digits with asterisks
+        numbers[i] = replacedNumber;
+      }
+    }
+
+// Combine the modified numbers back into a single string with a comma separator
+    newNumber = numbers.join(', ');
+
+    print("PHONE_NUMBER_HIDDEN: $newNumber");
+
+
+    print("PHONE_NUMBER_HIDDEN: $newNumber");
+
+
+    // print("PHONE_NUMBER_HIDDEN: $newNumber");
+
+
+    print("PHONE_NUMBER_HIDDEN: $newNumber");
+
+
+
+    print("FinalNumber:$newNumber");
+
+    print('Farmercodeotp_screen>>${widget.Farmercode}');
+    print('Farmermobilenumotp_screen>>${widget.farmermobilenumber}');
   }
 
   @override
@@ -57,17 +97,34 @@ class _otpScreenState extends State<Otp_screen> {
               Container(
                 child: Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 15.0, right: 10.0, top: 80.0),
-                      child: Text(
-                        'Enter the 6 Digits Code Sent to your Registered Mobile Number',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 15.0, right: 10.0, top: 80.0),
+                        child: Text(
+                          'Enter the 6 Digits Code Sent your Registered',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
+                        ),
+                        SizedBox(height: 10.0),
+                        Padding(
+                          padding: EdgeInsets.only(left: 15.0, right: 10.0, top: 0.0),
+                      child:  Text(
+                          'Mobile Number(s) $newNumber',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        ) ],
                     ),
+
                     SizedBox(height: 15.0),
                     OtpTextField(
                       numberOfFields: 6,
@@ -76,9 +133,11 @@ class _otpScreenState extends State<Otp_screen> {
                       filled: true,
                       onSubmit: (String otp) {
                         // Update the corresponding stringotp variables
-                        enteredOTP = otp;
 
-                        print('Concatenated OTP: $enteredOTP');
+                          enteredOTP = otp;
+                          print('Concatenated OTP: $enteredOTP');
+
+
 
 
 
@@ -112,7 +171,13 @@ class _otpScreenState extends State<Otp_screen> {
                         child: ElevatedButton(
                           onPressed: () async {
                             // Submit button logic
-                            getOtp(enteredOTP);
+
+
+                              getOtp(enteredOTP);
+
+
+
+
                           },
                           child: Text(
                             'SUBMIT',
@@ -250,5 +315,13 @@ class _otpScreenState extends State<Otp_screen> {
      return null;
    }
 
+   Future<bool> isvalidations() async {
+     bool isValid = true;
 
+     if (enteredOTP!=null) {
+       showCustomToastMessageLong('Please Enter OTP', context, 1, 4);
+       isValid = false;
+     }
+     return isValid; // Return true if validation is successful, false otherwise
+   }
 }

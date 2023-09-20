@@ -21,6 +21,8 @@ class _loginScreenState extends State<login> {
   String farmercode ="";
   List<loginmodel> loginlist = [];
   bool isLoading = true;
+  String? farmerMobileNumber;
+
   // @override
   // void initState() {
   //   // TODO: implement initState
@@ -289,14 +291,20 @@ try {
       print("Farmer Details added successfully.");
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setBool('isLoggedIn', true);
-      String Farmercode = farmercode ; // Replace with the actual user ID
+      String Farmercode = farmercode ;
+
+      farmerMobileNumber = responseData['result'];
+      prefs.setString('result', farmerMobileNumber!);
+
+      print('farmer_mobilenum==$farmerMobileNumber');
+      // Replace with the actual user ID
       print('Farmercode==$Farmercode');
       prefs.setString('Farmercode', Farmercode); // Save the user ID
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Otp_screen(Farmercode: farmercode),));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Otp_screen(Farmercode: farmercode,farmerMobileNumber!),));
     } else {
       print("Error: ${responseData["endUserMessage"]}");
       if(responseData["endUserMessage"] == "OTP Sent"){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Otp_screen(Farmercode: farmercode),));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Otp_screen(Farmercode: farmercode,farmerMobileNumber!),));
       }
       else{
       showCustomToastMessageLong("${responseData["endUserMessage"]}", context, 1, 4);
