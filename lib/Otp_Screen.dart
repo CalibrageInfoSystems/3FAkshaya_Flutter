@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 import 'CommonUtils/Commonclass.dart';
+import 'CommonUtils/Constants.dart';
 import 'api_config.dart';
 import 'model_class/FarmerDetails_Model.dart';
 import 'model_class/login_model_class.dart';
@@ -224,7 +225,7 @@ class _otpScreenState extends State<Otp_screen> {
          if (responseData != null && responseData.containsKey("isSuccess") && responseData["isSuccess"]) {
            print("Farmer Otp Sented successfully.");
            await SharedPreferencesHelper.saveCategories(responseData);
-
+           SharedPreferencesHelper.putBool(Constants.IS_LOGIN, true);
            Navigator.push(context, MaterialPageRoute(builder: (context) => homepage(),));
            // Parse the JSON response into a Farmer object
            Farmer farmer = Farmer.fromJson(responseData);
@@ -239,7 +240,9 @@ class _otpScreenState extends State<Otp_screen> {
            print('Farmercode==$Farmercode');
            prefs.setString('Farmercode', Farmercode); // Save the user ID
 
-         } else if (responseData != null && responseData.containsKey("endUserMessage")) {
+         }
+
+         else if (responseData != null && responseData.containsKey("endUserMessage")) {
            print("Error: ${responseData["endUserMessage"]}");
            if (responseData["endUserMessage"] == "OTP Validated") {
              // Navigator.push(context, MaterialPageRoute(builder: (context) => Otp_screen(Farmercode: farmercode),));

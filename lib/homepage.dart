@@ -17,7 +17,7 @@ class _MyHomePageState extends State<homepage> {
   int _currentIndex = 0;
 
  Farmer? catagoriesList; // Declare as nullable
- String? farmername;
+ String? farmername,Mobilenumber,address;
   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;
@@ -42,13 +42,15 @@ class _MyHomePageState extends State<homepage> {
       final categoriesDetails = loadedData['result']['categoriesDetails'];
 
 // Now you can access individual properties within these arrays if needed
-      final farmerId = farmerDetails[0]['id'];
-      final farmerName = farmerDetails[0]['firstName'];
+
+      farmername = farmerDetails[0]['firstName'];
+    Mobilenumber =farmerDetails[0]['contactNumber'];
+      address = farmerDetails[0]['address'];
 
 // Similarly, for categoriesDetails
       final category1Name = categoriesDetails[0]['name'];
       final category2Name = categoriesDetails[1]['name'];
-      print('farmerName==$farmerName');
+      print('farmerName==$farmername');
       print('category1Name==$category1Name');
       print('category2Name==$category2Name');
      // catagoriesList =
@@ -92,21 +94,21 @@ class _MyHomePageState extends State<homepage> {
     flex: 2,
     child: Container(
     color: Colors.green,
-    child: _currentIndex == 1 ? buildPart2And3() : null,
+    child: _currentIndex == 0 ? buildPart2And3() : null,
     ),
     ),
     Expanded(
     flex: 2,
     child: Container(
     color: Colors.orange,
-    child: _currentIndex == 2 ? buildPart2And3() : null,
+    child: _currentIndex == 0 ? buildPart2And3() : null,
     ),
     ),
     Expanded(
     flex: 2,
     child: Container(
     color: Colors.red,
-    child: _currentIndex == 3 ? buildPart1() : null,
+    child: _currentIndex == 0 ? buildPart1() : null,
     ),
     ),
     ],
@@ -134,16 +136,8 @@ class _MyHomePageState extends State<homepage> {
              )
 
             ),
-            InkWell(
-              onTap: () {
-                // Add your click listener logic here
-                _loadFarmerResponse();
-
-                print('Name: ${farmername}');
-                print('Text Clicked');
-              },
-              child: Text(
-                'Full Name',
+            Text(
+               '${farmername}' ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16.0,
@@ -151,10 +145,10 @@ class _MyHomePageState extends State<homepage> {
                   decoration: TextDecoration.underline, // Optional: Add underline for clickable text
                 ),
               ),
-            )
-,
+
+
             Text(
-              'Mobile Number',
+              '${Mobilenumber}' ,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16.0,
@@ -162,7 +156,7 @@ class _MyHomePageState extends State<homepage> {
               ),
             ),
             Text(
-              'Address',
+              '${address}' ,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16.0,
@@ -179,7 +173,7 @@ class _MyHomePageState extends State<homepage> {
             ),
               title: Text('Home'),
               onTap: () {
-                _loadFarmerResponse();
+               // _loadFarmerResponse();
                 // Implement the action when the Home item is tapped
                 Navigator.pop(context); // Close the drawer
               },

@@ -2,6 +2,10 @@ import 'dart:async';
 import 'package:akshayaflutter/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'CommonUtils/Constants.dart';
+import 'homepage.dart';
 
 
 class  SplashScreen extends StatefulWidget {
@@ -11,9 +15,13 @@ class  SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>   with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
+  bool isLogin = false;
+  bool welcome = false;
+  int langID = 0;
   @override
   void initState() {
     super.initState();
+    loadData();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitDown,
       DeviceOrientation.portraitUp,
@@ -33,9 +41,26 @@ class _SplashScreenState extends State<SplashScreen>   with SingleTickerProvider
 
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        navigateToHome();
+        if (isLogin) {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => homepage(),
+          ));
+        } else {
+          if (welcome) {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => login(),
+            ));
+          }
+
+          else {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => login(),
+            ));
+          }
+        }
       }
-    });
+      });
+
 
     _animationController.forward();
   }
@@ -109,12 +134,24 @@ class _SplashScreenState extends State<SplashScreen>   with SingleTickerProvider
                 ),
               ),
             ],
+
+
+
           ),
         ),
       ),
     );
   }
+    Future<void> loadData() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      setState(() {
+        isLogin = prefs.getBool(Constants.IS_LOGIN) ?? false;
+        welcome = prefs.getBool(Constants.WELCOME) ?? false;
+        langID = prefs.getInt("lang") ?? 0;
+      });
+    }
 }
+
 
 class TypewriterText extends StatefulWidget {
   final String text;

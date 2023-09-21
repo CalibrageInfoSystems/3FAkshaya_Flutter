@@ -6,19 +6,13 @@ import 'dart:convert';
 
 
 class SharedPreferencesHelper {
-  static const String CHURCH_DATA = 'church_data';
+  static const String FARMER_DATA = '3fFarmerdata_data';
   static const String CataGories = 'categories';
 
-  // static Future<void> saveCategories(Farmer farmerModel) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   final json = farmerModel.toJson(); // Assuming you have a toJson method in your model
-  //   if (prefs != null) {
-  //     final jsonString = jsonEncode(json); // Encode the farmerModel instead
-  //     await prefs.setString(CataGories, jsonString);
-  //     print('Model class saved to SharedPreferences: $jsonString'); // Add this print statement
-  //
-  //   }
-  // }
+  static Future<void> putBool(String key, bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(key, value);
+  }
 
   static Future<void> saveCategories(Map<String, dynamic> jsonResponse) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
