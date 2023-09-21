@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:akshayaflutter/SharedPreferencesHelper.dart';
+import 'package:akshayaflutter/homepage.dart';
 import 'package:http/http.dart' as http;
 import 'package:akshayaflutter/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -33,44 +34,19 @@ class _otpScreenState extends State<Otp_screen> {
   void initState() {
     super.initState();
     //enteredOTP = "";
-     newNumber=widget.farmermobilenumber;
-
-   // String newNumber = widget.farmermobilenumber;
-
-// Split the string into two parts based on a comma separator
-    //String newNumber = widget.farmermobilenumber;
-
-// Split the string into parts based on a comma separator
+    newNumber=widget.farmermobilenumber;
     List<String> numbers = newNumber.split(',');
-
-// Iterate through the numbers and hide the first 6 digits if present
     for (int i = 0; i < numbers.length; i++) {
       if (numbers[i].length >= 6) {
-        String hiddenPart = numbers[i].substring(6); // Extract the part to be hidden
-        String asterisks = '*' * 6; // Create a string of 6 asterisks
-        String replacedNumber = asterisks + hiddenPart; // Replace the first 6 digits with asterisks
+        String hiddenPart = numbers[i].substring(6);
+        String asterisks = '*' * 6;
+        String replacedNumber = asterisks + hiddenPart;
         numbers[i] = replacedNumber;
       }
     }
-
-// Combine the modified numbers back into a single string with a comma separator
     newNumber = numbers.join(', ');
-
     print("PHONE_NUMBER_HIDDEN: $newNumber");
-
-
-    print("PHONE_NUMBER_HIDDEN: $newNumber");
-
-
-    // print("PHONE_NUMBER_HIDDEN: $newNumber");
-
-
-    print("PHONE_NUMBER_HIDDEN: $newNumber");
-
-
-
     print("FinalNumber:$newNumber");
-
     print('Farmercodeotp_screen>>${widget.Farmercode}');
     print('Farmermobilenumotp_screen>>${widget.farmermobilenumber}');
   }
@@ -90,7 +66,6 @@ class _otpScreenState extends State<Otp_screen> {
                 height: double.infinity,
                 fit: BoxFit.cover,
               ),
-              // Background Color with Opacity
               Container(
                 color: Color(0x8D000000),
               ),
@@ -171,9 +146,13 @@ class _otpScreenState extends State<Otp_screen> {
                         child: ElevatedButton(
                           onPressed: () async {
                             // Submit button logic
+                            // bool validationSuccess = await isvalidations();
+                            // if( validationSuccess){
+                            //   getOtp(enteredOTP);
+                            // }
 
+                            getOtp(enteredOTP);
 
-                              getOtp(enteredOTP);
 
 
 
@@ -244,23 +223,27 @@ class _otpScreenState extends State<Otp_screen> {
 
          if (responseData != null && responseData.containsKey("isSuccess") && responseData["isSuccess"]) {
            print("Farmer Otp Sented successfully.");
+           await SharedPreferencesHelper.saveCategories(responseData);
 
+           Navigator.push(context, MaterialPageRoute(builder: (context) => homepage(),));
            // Parse the JSON response into a Farmer object
            Farmer farmer = Farmer.fromJson(responseData);
 
            SharedPreferences prefs = await SharedPreferences.getInstance();
 
            // Save the Farmer object to SharedPreferences
-           SharedPreferencesHelper.saveCategories(farmer);
 
+           final loadedData = await SharedPreferencesHelper.getCategories();
+           print('loadedData==$loadedData');
            String Farmercode = widget.Farmercode; // Replace with the actual user ID
            print('Farmercode==$Farmercode');
            prefs.setString('Farmercode', Farmercode); // Save the user ID
-           //  Navigator.push(context, MaterialPageRoute(builder: (context) => Otp_screen(Farmercode: farmercode),));
+
          } else if (responseData != null && responseData.containsKey("endUserMessage")) {
            print("Error: ${responseData["endUserMessage"]}");
            if (responseData["endUserMessage"] == "OTP Validated") {
              // Navigator.push(context, MaterialPageRoute(builder: (context) => Otp_screen(Farmercode: farmercode),));
+             Navigator.push(context, MaterialPageRoute(builder: (context) => homepage(),));
            } else {
              showCustomToastMessageLong("${responseData["endUserMessage"]}", context, 1, 4);
            }
