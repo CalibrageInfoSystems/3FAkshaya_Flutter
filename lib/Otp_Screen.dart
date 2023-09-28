@@ -230,7 +230,7 @@ class _otpScreenState extends State<Otp_screen> {
            // Parse the JSON response into a Farmer object
            Farmer farmer = Farmer.fromJson(responseData);
 
-           SharedPreferences prefs = await SharedPreferences.getInstance();
+           SharedPreferences prefs            = await SharedPreferences.getInstance();
 
            // Save the Farmer object to SharedPreferences
 

@@ -47,6 +47,10 @@ dependencies:
   flutter_svg: ^2.0.7
 #  otp_text_field: ^1.1.3
   flutter_otp_text_field: ^1.1.1
+  carousel_slider: ^4.0.0
+  marquee: ^2.2.3
+
+
 #  json_annotation: ^5.0.0
 #  json_serializable: ^5.0.2
 
@@ -84,6 +88,9 @@ flutter:
     - assets/ic_myprofile.svg
     - assets/ic_care.svg
     - assets/ic_user.png
+    - assets/ffb_collection.png
+    - assets/passbook.png
+    - assets/main_visit.png
 
   fonts:
      - family: hind_semibold
