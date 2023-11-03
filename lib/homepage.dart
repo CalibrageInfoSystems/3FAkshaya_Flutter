@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'package:akshayaflutter/CustomVectorWidget.dart';
 import 'package:akshayaflutter/My3F.dart';
 import 'package:akshayaflutter/care.dart';
 import 'package:akshayaflutter/home_page.dart';
 import 'package:akshayaflutter/profile.dart';
+import 'CustomVectorWidget.dart';
+import 'CustomVectorWidget.dart';
 import 'request.dart';
 import 'package:akshayaflutter/model_class/FarmerDetails_Model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,6 +32,11 @@ class _MyHomePageState extends State<homepage> {
   String? address2;
 
 
+  @override
+  void dispose() {
+    // Clean up any resources if needed
+    super.dispose();
+  }
   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;
@@ -39,7 +47,7 @@ class _MyHomePageState extends State<homepage> {
   void initState() {
     // TODO: implement initState
     _loadFarmerResponse();
-    // Check if the farmerresponse is not null
+
     super.initState();
   }
 
@@ -49,14 +57,13 @@ class _MyHomePageState extends State<homepage> {
 
     if (loadedData != null) {
       final farmerDetails = loadedData['result']['farmerDetails'];
-
-      // Assuming you want to get the name of the first farmer in the list
       final loadedFarmerName = farmerDetails[0]['firstName'];
       final loadedlastFarmerName = farmerDetails[0]['lastName'];
       final loadedMobilenum = farmerDetails[0]['contactNumber'];
       final loadedmutipleMobilenum = farmerDetails[0]['contactNumbers'];
       final loadedaddress1 = farmerDetails[0]['addressLine1'];
       final loadedaddress2 = farmerDetails[0]['addressLine2'];
+
       setState(() {
         farmerName = loadedFarmerName;
         farmerlastname =loadedlastFarmerName;
@@ -68,9 +75,11 @@ class _MyHomePageState extends State<homepage> {
 
       print('farmerName==$farmerName');
       print('Text Clicked');
+
     } else {
-      // No data found in SharedPreferences
+
       print('No data found in SharedPreferences');
+
     }
   }
 
@@ -80,38 +89,51 @@ class _MyHomePageState extends State<homepage> {
 
       appBar: AppBar(
         title: Text('3F Akshaya'),
+        // flexibleSpace: Container(
+        //   decoration: BoxDecoration(
+        //     gradient: MyPainter().getGradient(), // Call your method to get the gradient
+        //   ),
+        // ),
+          elevation: 0,
+
+        flexibleSpace: Stack(
+          children: [
+            Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                colors: [Color(0xFFe56d5d),Color(0xFFe56d5d),
+                ],
+              ),
+            ),
+           ),
+          ],
+        ),
+
       ),
-
-
+     // extendBodyBehindAppBar: true,
       drawer: Drawer(
-
         backgroundColor: Colors.black,
         child: ListView(
           children: [
-
             DrawerHeader(
-              // child: Text('Side Navigation'),
              child: Container(
                width: 120.0,
                height: 120.0,
                decoration: BoxDecoration(
                  shape: BoxShape.circle,
-
                ),
                child: CircleAvatar(
                  backgroundColor: Colors.transparent,
                  child: Image.asset(
                    'assets/ic_user.png',
-                   fit: BoxFit.fill, // You can adjust the BoxFit as per your preference
+                   fit: BoxFit.fill,
                  ),
-               ),
-             )
-
-            ),
-
-
+             ),
+            )
+           ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center, // Adjust the alignment as needed
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   '$farmerName',
@@ -120,7 +142,6 @@ class _MyHomePageState extends State<homepage> {
                     fontWeight: FontWeight.bold,
                     fontFamily: 'hind_semibold',
                     color: Colors.white,
-                    //decoration: TextDecoration.underline, // Optional: Add underline for clickable text
                   ),
                 ),
                 SizedBox(width: 10.0,),
@@ -131,24 +152,13 @@ class _MyHomePageState extends State<homepage> {
                     color: Colors.white,
                     fontFamily: 'hind_semibold',
                     fontWeight: FontWeight.bold,
-                   // decoration: TextDecoration.underline, // Optional: Add underline for clickable text
                   ),
                 ),
               ],
             ),
-
             SizedBox(height: 10.0,),
-
-            // Text(
-            //   '$farmermobilenum',
-            //   textAlign: TextAlign.center,
-            //   style: TextStyle(
-            //     fontSize: 16.0,
-            //     fontWeight: FontWeight.bold,
-            //   ),
-            // ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center, // Adjust the alignment as needed
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   '$address1',
@@ -157,7 +167,6 @@ class _MyHomePageState extends State<homepage> {
                     color: Colors.white,
                     fontFamily: 'hind_semibold',
                     fontWeight: FontWeight.bold,
-                    //decoration: TextDecoration.underline, // Optional: Add underline for clickable text
                   ),
                 ),
                 SizedBox(width: 10.0,),
@@ -168,34 +177,33 @@ class _MyHomePageState extends State<homepage> {
                     color: Colors.white,
                     fontFamily: 'hind_semibold',
                     fontWeight: FontWeight.bold,
-                    // decoration: TextDecoration.underline, // Optional: Add underline for clickable text
                   ),
                 ),
               ],
             ),
-      // Container(
-      //   decoration: BoxDecoration(
-      //     gradient: LinearGradient(
-      //       colors: [
-      //         Color(0xFFFF4500), // Start color
-      //         Colors.red,         // Middle color (same as the start color)
-      //         Color(0xFFFA678E), // End color
-      //       ],
-      //       stops: [0.0, 0.5, 1.0],
-      //       begin: Alignment.centerLeft,
-      //       end: Alignment.centerRight,
-      //     ),
-      //   ),),
 
-            SizedBox(height: 20.0,),
+        Container(
+          height: 2.0,
+          width: 10.0,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFFFF4500),
+                Color(0xFFA678EF),
+                Color(0xFFFF4500),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.center,
+            ),
+          ),
+        ),
             ListTile(
               leading: SvgPicture.asset(
               'assets/ic_home.svg',
               width: 20,
               height: 20,
               fit: BoxFit.contain,
-                color: Colors.white, // Set the icon color to white
-
+                color: Colors.white,
             ),
               title: Text('Home', style: TextStyle(
                 color:Colors.white,
@@ -203,8 +211,6 @@ class _MyHomePageState extends State<homepage> {
                 fontFamily: 'hind_semibold',
               ),),
               onTap: () {
-                _loadFarmerResponse();
-                // Implement the action when the Home item is tapped
                 Navigator.pop(context); // Close the drawer
               },
             ),
@@ -214,7 +220,7 @@ class _MyHomePageState extends State<homepage> {
                 width: 20,
                 height: 20,
                 fit: BoxFit.contain,
-                color: Colors.white, // Set the icon color to white
+                color: Colors.white,
 
               ),
               title: Text('Choose Language', style: TextStyle(
@@ -223,8 +229,8 @@ class _MyHomePageState extends State<homepage> {
                 fontFamily: 'hind_semibold',
               ),),
               onTap: () {
-                // Implement the action when the Profile item is tapped
-                Navigator.pop(context); // Close the drawer
+
+                Navigator.pop(context);
               },
             ),
             ListTile(
@@ -233,8 +239,7 @@ class _MyHomePageState extends State<homepage> {
                 width: 20,
                 height: 20,
                 fit: BoxFit.contain,
-                color: Colors.white, // Set the icon color to white
-
+                color: Colors.white,
               ),
               title: Text('Profile', style: TextStyle(
                 color:Colors.white,
@@ -242,7 +247,6 @@ class _MyHomePageState extends State<homepage> {
                 fontFamily: 'hind_semibold',
               ),),
               onTap: () {
-                // Implement the action when the My3F item is tapped
                 Navigator.pop(context); // Close the drawer
               },
             ),
@@ -253,7 +257,6 @@ class _MyHomePageState extends State<homepage> {
                 height: 20,
                 fit: BoxFit.contain,
                 color: Colors.white, // Set the icon color to white
-
               ),
               title: Text('Request', style: TextStyle(
                 color:Colors.white,
@@ -271,7 +274,7 @@ class _MyHomePageState extends State<homepage> {
                 'assets/ic_my.svg',
                 width: 20,
                 height: 20,
-                fit: BoxFit.contain,
+                fit: BoxFit.fill,
                 color: Colors.white, // Set the icon color to white
 
               ),
@@ -310,6 +313,10 @@ class _MyHomePageState extends State<homepage> {
 
       ),
       body: _buildBody(),
+
+
+
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
@@ -377,7 +384,7 @@ class _MyHomePageState extends State<homepage> {
       case 0:
         return home_page();
       case 1:
-        return profile();
+        return ProfilePage();
       case 2:
         return My3f();
       case 3:
@@ -390,4 +397,38 @@ class _MyHomePageState extends State<homepage> {
   }
 
 }
+class MyPainter extends CustomPainter {
+  LinearGradient getGradient() {
+    return LinearGradient(
+      colors: [
+        Color(0xFFe56d5d),
+       Color(0xFFe49e64),
+      Color(0xFFE39A63),
+      ],
+      //begin: Alignment.topCenter, // You can adjust the start and end points as needed
+     // end: Alignment.bottomCenter,
+      // begin: Alignment(0, 0),
+      // end: Alignment(0, 1),
+    );
+  }
 
+  @override
+  void paint(Canvas canvas, Size size) {
+    final path = Path()
+      ..moveTo(0, size.height)
+      ..lineTo(0, 0)
+      ..lineTo(size.width, 0)
+      ..lineTo(size.width, size.height)
+      ..close();
+
+    final paint = Paint()
+      ..shader = getGradient().createShader(
+        Rect.fromPoints(Offset(0, 0), Offset(0, size.height)),
+      );
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}

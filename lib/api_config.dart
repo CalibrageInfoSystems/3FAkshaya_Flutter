@@ -11,3 +11,9 @@ var getfarmerotp="Farmer/";
 var getFarmer_ID_CHECK ="farmer/SendOTP/";
 
 var getbanners ="Banner/GetActiveBannerByStateCode/";
+var getlearning ="Encyclopedia/GetActiveEncyclopediaCategoryDetails/";
+var getActivePlotsByFarmerCode = "Farmer/GetActivePlotsByFarmerCode/";
+var  getServicesByStateCode ="StateService/GetServicesByStateCode/";
+var  getContactInfo = "ContactInfo/GetContactInfo/";
+var  get3FInfo = "Farmer/Get3FInfo/";
+var  getcollection ="Collection";

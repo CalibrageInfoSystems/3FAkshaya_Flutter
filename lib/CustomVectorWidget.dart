@@ -4,7 +4,7 @@ class CustomVectorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      size: Size(987.3, 870.3), // Set the size based on your vector dimensions
+      size: Size(987.3, 870.3),
       painter: VectorPainter(),
     );
   }

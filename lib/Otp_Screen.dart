@@ -229,7 +229,6 @@ class _otpScreenState extends State<Otp_screen> {
            Navigator.push(context, MaterialPageRoute(builder: (context) => homepage(),));
            // Parse the JSON response into a Farmer object
            Farmer farmer = Farmer.fromJson(responseData);
-
            SharedPreferences prefs            = await SharedPreferences.getInstance();
 
            // Save the Farmer object to SharedPreferences

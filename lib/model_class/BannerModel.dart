@@ -1,10 +1,12 @@
 
 
+import 'dart:developer';
+
 class BannerModel {
   final int id;
   final String imageName;
-  final String description;
-  final String stateCode;
+  final String? description;
+  final String? stateCode;
   final bool isActive;
 
   BannerModel({
@@ -16,6 +18,7 @@ class BannerModel {
   });
 
   factory BannerModel.fromJson(Map<String, dynamic> json) {
+    inspect(json);
     return BannerModel(
       id: json['result']['BannerModel'][0]['id'],
       imageName: json['result']['BannerModel'][0]['imageName'],
@@ -24,4 +27,15 @@ class BannerModel {
       isActive: json['result']['BannerModel'][0]['isActive'],
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'imageName': imageName,
+      'description': description,
+      'stateCode': stateCode,
+      'isActive': isActive,
+    };
+  }
 }
+
+

@@ -9,37 +9,24 @@ import 'package:http/http.dart' as http;
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'CommonUtils/Commonclass.dart';
-class login extends StatefulWidget{
+
+class login extends StatefulWidget {
   @override
   _loginScreenState createState() => _loginScreenState();
 }
 
 class _loginScreenState extends State<login> {
   TextEditingController _farmercodeController = TextEditingController();
-  String farmercode ="";
+  String farmercode = "";
   List<loginmodel> loginlist = [];
   bool isLoading = true;
   String? farmerMobileNumber;
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //
-  //   String farmercode = _farmercodeController.text;
-  //   print('loginscreenfarmercode$farmercode');
-  //   super.initState();
-  // }
   Future<loginmodel?> _onSubmit() async {
-
-
     farmercode = _farmercodeController.text;
     print("Entered text: $farmercode");
     farmerlogin(farmercode);
-
-
-
   }
 
   @override
@@ -47,6 +34,7 @@ class _loginScreenState extends State<login> {
     _farmercodeController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,23 +43,21 @@ class _loginScreenState extends State<login> {
           height: MediaQuery.of(context).size.height,
           child: Stack(
             children: [
-              // Background Image
               Image.asset(
                 'assets/appbg.png',
                 width: double.infinity,
                 height: double.infinity,
                 fit: BoxFit.cover,
               ),
-              // Background Color with Opacity
               Container(
                 color: Color(0x8D000000),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 180.0), // Adjust the top padding as needed
+                padding: const EdgeInsets.only(top: 180.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start, // Align children to the start (top) of the column
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    // User Icon
+
                     Align(
                       alignment: Alignment.topCenter,
                       child: Image.asset(
@@ -80,7 +66,6 @@ class _loginScreenState extends State<login> {
                         height: 150,
                       ),
                     ),
-                    // Text
                     Text(
                       'Welcome',
                       style: TextStyle(
@@ -89,63 +74,70 @@ class _loginScreenState extends State<login> {
                         fontFamily: 'hind_semibold',
                       ),
                     ),
-
-                    // Text Form Field
                     Padding(
-                      padding: const EdgeInsets.only(top: 22.0,left: 22.0,right: 22.0),
+                      padding:  EdgeInsets.only(
+                          top: 22.0, left: 22.0, right: 22.0),
                       child: TextFormField(
                         controller: _farmercodeController,
                         decoration: InputDecoration(
                           hintText: 'Enter Farmer Id',
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.white, // Set the border line color to white
+                              color: Colors
+                                  .white, // Set the border line color to white
                             ),
-                            borderRadius: BorderRadius.circular(10.0), // Set the border radius
+                            borderRadius: BorderRadius.circular(
+                                10.0), // Set the border radius
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.white, // Set the border line color to white
+                              color: Colors
+                                  .white, // Set the border line color to white
                             ),
-                            borderRadius: BorderRadius.circular(10.0), // Set the border radius
+                            borderRadius: BorderRadius.circular(
+                                10.0),
                           ),
                           hintStyle: TextStyle(
-                            color: Color(0xCBBEBEBE), // Set the hint text color to CBBEBEBE
+                            color: Color(0xCBBEBEBE),
                             fontFamily: 'hind_semibold',
                             fontSize: 20, // Set the font size to 20
                           ),
-                          contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 15), // Add padding to center the hint text
-                          alignLabelWithHint: true, // Center-align the hint text
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 15),
+                          // Add padding to center the hint text
+                          alignLabelWithHint:
+                              true, // Center-align the hint text
                         ),
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Colors.white, // Set the text color to white
-                          fontFamily: 'hind_semibold', // You can set the font family here if needed
-                          fontSize: 20, // You can set the font size here if needed
+                          color: Colors.white,
+
+                          fontFamily: 'hind_semibold',
+
+                          fontSize: 20,
                         ),
                       ),
                     ),
-
-
-
-
-                    // Button below TextFormField
-
                     Padding(
-                      padding: const EdgeInsets.only(top: 22.0,left: 22.0,right: 22.0), // Add padding to the buttons
+                      padding: const EdgeInsets.only(
+                          top: 22.0,
+                          left: 22.0,
+                          right: 22.0),
                       child: Container(
-                        width: double.infinity, // Make the Container expand horizontally
+                        width: double.infinity,
+
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
-                              Color(0xFFCCCCCC), // Start color
-                              Color(0xFFFFFFFF), // Center color
-                              Color(0xFFCCCCCC), // End color
+                              Color(0xFFCCCCCC),
+                              Color(0xFFFFFFFF),
+                              Color(0xFFCCCCCC),
                             ],
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                           ),
-                          borderRadius: BorderRadius.circular(10.0), // Adjust the border radius as needed
+                          borderRadius: BorderRadius.circular(10.0),
+                          // Adjust the border radius as needed
                           border: Border.all(
                             width: 2.0,
                             color: Color(0xFFe86100), // Your stroke color
@@ -155,18 +147,8 @@ class _loginScreenState extends State<login> {
                           onPressed: () async {
                             bool validationSuccess = await isvalidations();
                             if (validationSuccess) {
-
-                             _onSubmit();
-
-
-
+                              _onSubmit();
                             }
-
-
-
-
-
-
                           },
                           child: Text(
                             'Login',
@@ -187,41 +169,40 @@ class _loginScreenState extends State<login> {
                       ),
                     ),
                     Padding(
-                  padding: const EdgeInsets.only(top: 6.0),
-                  child:  Container(
-                      alignment: AlignmentDirectional.center,
+                      padding: const EdgeInsets.only(top: 6.0),
+                      child: Container(
+                        alignment: AlignmentDirectional.center,
                         child: Text(
                           'OR',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
-
+                        ),
                       ),
                     ),
-                ),
 
                     Padding(
-                      padding: const EdgeInsets.only(top: 10.0,left: 22.0,right: 22.0), // Add padding to the buttons
+                      padding: const EdgeInsets.only(
+                          top: 10.0, left: 22.0, right: 22.0),
                       child: Container(
-                        width: double.infinity, // Make the Container expand horizontally
+                        width: double.infinity,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
-                              Color(0xFFCCCCCC), // Start color
-                              Color(0xFFFFFFFF), // Center color
-                              Color(0xFFCCCCCC), // End color
+                              Color(0xFFCCCCCC),
+                              Color(0xFFFFFFFF),
+                              Color(0xFFCCCCCC),
                             ],
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                           ),
-                          borderRadius: BorderRadius.circular(10.0), // Adjust the border radius as needed
+                          borderRadius: BorderRadius.circular(10.0),
                           border: Border.all(
                             width: 2.0,
-                            color: Color(0xFFe86100), // Your stroke color
+                            color: Color(0xFFe86100),
                           ),
                         ),
-
                         child: ElevatedButton(
                           onPressed: () {
                             _scanQR();
@@ -235,17 +216,17 @@ class _loginScreenState extends State<login> {
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent, // Set the button's background color to transparent
-                            elevation: 0, // Remove the button's elevation
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0), // Match the border radius in the BoxDecoration
+                            primary: Colors.transparent,
+                            elevation: 0,
+                             shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  10.0),
                             ),
                           ),
                         ),
                       ),
                     ),
                     // Other Buttons
-                    // You can add other buttons here if needed.
                   ],
                 ),
               ),
@@ -255,6 +236,7 @@ class _loginScreenState extends State<login> {
       ),
     );
   }
+
   Future<void> _scanQR() async {
     // Request camera permission
     var status = await Permission.camera.request();
@@ -277,49 +259,59 @@ class _loginScreenState extends State<login> {
     }
   }
 
-  Future<loginmodel?> farmerlogin(String fc) async{
-loginlist.clear();
-final url = Uri.parse(baseUrl+getfarmerlogin +"$fc"+ "/null");
-print('farmerloginurl>>$url');
-try {
-  final response = await http.get(url);
-  if (response.statusCode == 200) {
-    final Map<String, dynamic> responseData = jsonDecode(response.body);
-    print('==response$responseData');
+  Future<loginmodel?> farmerlogin(String fc) async {
+    loginlist.clear();
 
-    if (responseData["isSuccess"]) {
-      print("Farmer Details added successfully.");
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool('isLoggedIn', true);
-      String Farmercode = farmercode ;
+    final url = Uri.parse(baseUrl + getfarmerlogin + "$fc" + "/null");
+    print('farmerloginurl>>$url');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        print('==response$responseData');
 
-      farmerMobileNumber = responseData['result'];
-      prefs.setString('result', farmerMobileNumber!);
+        if (responseData["isSuccess"]) {
+          print("Farmer Details added successfully.");
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setBool('isLoggedIn', true);
+          String Farmercode = farmercode;
 
-      print('farmer_mobilenum==$farmerMobileNumber');
-      // Replace with the actual user ID
-      print('Farmercode==$Farmercode');
-      prefs.setString('Farmercode', Farmercode); // Save the user ID
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Otp_screen(Farmercode: farmercode,farmerMobileNumber!),));
-    } else {
-      print("Error: ${responseData["endUserMessage"]}");
-      if(responseData["endUserMessage"] == "OTP Sent"){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Otp_screen(Farmercode: farmercode,farmerMobileNumber!),));
+          farmerMobileNumber = responseData['result'];
+          prefs.setString('result', farmerMobileNumber!);
+
+          print('farmer_mobilenum==$farmerMobileNumber');
+          // Replace with the actual user ID
+          print('Farmercode==$Farmercode');
+          prefs.setString('Farmercode', Farmercode); // Save the user ID
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    Otp_screen(Farmercode: farmercode, farmerMobileNumber!),
+              ));
+        } else {
+          print("Error: ${responseData["endUserMessage"]}");
+          if (responseData["endUserMessage"] == "OTP Sent") {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      Otp_screen(Farmercode: farmercode, farmerMobileNumber!),
+                ));
+          } else {
+            showCustomToastMessageLong(
+                "${responseData["endUserMessage"]}", context, 1, 4);
+          }
+        }
+      } else {
+        throw Exception('Failed to Farmer list');
       }
-      else{
-      showCustomToastMessageLong("${responseData["endUserMessage"]}", context, 1, 4);
-      }
-
+    } catch (error) {
+      throw Exception('Failed to connect to the API$error');
     }
+    return null;
+  }
 
-  } else {
-    throw Exception('Failed to Farmer list');
-  }
-} catch (error) {
-  throw Exception('Failed to connect to the API$error');
-}
-return null;
-  }
   Future<bool> isvalidations() async {
     bool isValid = true;
 
@@ -329,8 +321,4 @@ return null;
     }
     return isValid; // Return true if validation is successful, false otherwise
   }
-
-
 }
-
-
