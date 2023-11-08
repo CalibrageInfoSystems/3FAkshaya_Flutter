@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:akshayaflutter/CommonUtils/Commonclass.dart';
 import 'package:akshayaflutter/CustomVectorWidget.dart';
 import 'package:akshayaflutter/api_config.dart';
+import 'package:akshayaflutter/farmer_passbook.dart';
 import 'package:akshayaflutter/model_class/BannerModel.dart';
 import 'package:akshayaflutter/model_class/learning_Services.dart';
 import 'package:carousel_slider/carousel_controller.dart';
@@ -41,7 +42,7 @@ class _home_pageState extends State<home_page> {
     super.initState();
 
     asset_Path = "";
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(Duration(seconds: 0), () {
       setState(() {
         isLoading = false; // Set isLoading to false when data is loaded
       });
@@ -159,15 +160,21 @@ class _home_pageState extends State<home_page> {
                           // Align the second column in the center
                           Expanded(
                             flex: 1,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset('assets/passbook.png',
-                                    width: 48, height: 48),
-                                Text('Farmer Passbook',
-                                    style: TextStyle(color: Colors.white)),
-                              ],
+                            child: GestureDetector(
+                              onTap: () {
+                                print('clickedonfarmerpassbook');
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => farmerpassbook()
+                                ));
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset('assets/passbook.png',
+                                      width: 48, height: 48),
+                                  Text('Farmer Passbook',
+                                      style: TextStyle(color: Colors.white)),
+                                ],
+                              ),
                             ),
                           ),
 
@@ -559,7 +566,7 @@ class _home_pageState extends State<home_page> {
 
       return learningListData.map((data) => learning.fromJson(data)).toList();
     } else {
-      throw Exception('Failed to load services');
+      throw Exception('Failed to load learningservices');
     }
   }
 }

@@ -117,6 +117,7 @@ flutter:
     - assets/fertilizers.png
     - assets/fertilizers.png
     - assets/ic_left.png
+    - assets/ic_bank_white.png
 
   fonts:
      - family: hind_semibold
